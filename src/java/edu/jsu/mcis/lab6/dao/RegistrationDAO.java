@@ -3,6 +3,7 @@ package edu.jsu.mcis.lab6.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import org.json.simple.*;
 
 public class RegistrationDAO {
@@ -13,6 +14,10 @@ public class RegistrationDAO {
             + "((registration JOIN attendee ON registration.attendeeid = attendee.id) "
             + "JOIN `session` ON registration.sessionid = `session`.id) "
             + "WHERE `session`.id = ? AND attendee.id = ?";
+    
+    private final String QUERY_CREATE = "INSERT INTO registration (sessionid, attendeeid) VALUES (?, ?)";
+    private final String QUERY_UPDATE = "UPDATE registration SET sessionid=? WHERE attendeeid=?";
+    private final String QUERY_DELETE = "DELETE FROM registration WHERE attendeeid = ?";
     
     RegistrationDAO(DAOFactory dao) {
         this.daoFactory = dao;
@@ -88,4 +93,128 @@ public class RegistrationDAO {
 
     }
     
+    public String create(int sessionid, int attendeeid) {
+
+        JSONObject json = new JSONObject();
+        json.put("success", false);
+        
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        
+        try {
+            Connection conn = daoFactory.getConnection();
+            if (conn.isValid(0)) {
+                
+                ps = conn.prepareStatement(QUERY_CREATE);
+                ps.setInt(1, sessionid);
+                ps.setInt(2, attendeeid);
+                
+                int updateCount = ps.executeUpdate();
+                boolean hasResults = updateCount > 0;
+                if (hasResults) {
+            
+                    json.put("success", hasResults);
+                    
+                    json.put("attendeeid", attendeeid);
+                    json.put("sessionid", sessionid);
+
+                }
+            }
+        }
+        catch (Exception e) { e.printStackTrace(); }
+        
+        finally {
+            
+            if (rs != null) { try { rs.close(); } catch (Exception e) { e.printStackTrace(); } }
+            if (ps != null) { try { ps.close(); } catch (Exception e) { e.printStackTrace(); } }
+            
+        }
+        
+        return JSONValue.toJSONString(json);
+    }
+    
+    public String update(int sessionid, int attendeeid) {
+        
+        JSONObject json = new JSONObject();
+        json.put("success", false);
+        
+        PreparedStatement ps = null;
+        
+        try {
+            
+            Connection conn = daoFactory.getConnection();
+            
+            if (conn.isValid(0)) {
+                
+                ps = conn.prepareStatement(QUERY_UPDATE);
+                ps.setInt(1, sessionid);
+                ps.setInt(2, attendeeid);
+                
+                int updateCount = ps.executeUpdate();
+                boolean hasResults = updateCount > 0;
+                
+                if (hasResults) {
+            
+                    json.put("success", hasResults);
+                    
+                    json.put("attendeeid", attendeeid);
+                    json.put("sessionid", sessionid);
+
+                }
+                
+            }
+            
+        }
+        
+        catch (Exception e) { e.printStackTrace(); }
+        
+        finally {
+
+            if (ps != null) { try { ps.close(); } catch (Exception e) { e.printStackTrace(); } }
+            
+        }
+        
+        return JSONValue.toJSONString(json);
+    }
+    
+    public String delete(int sessionid, int attendeeid) {
+        
+        boolean result = false;
+        JSONObject json = new JSONObject();
+        json.put("success", false);
+        
+        PreparedStatement ps = null;
+        
+        try { 
+            
+            Connection conn = daoFactory.getConnection();
+            
+            if (conn.isValid(0)) {
+                
+                ps = conn.prepareStatement(QUERY_DELETE);
+                ps.setInt(1, attendeeid);
+                
+                int updateCount = ps.executeUpdate();
+                
+                if (updateCount > 0) {
+            
+                    result = true;
+
+                }
+                json.put("success", true);
+            }
+        }
+        
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        finally {
+
+            if (ps != null) { try { ps.close(); } catch (Exception e) { e.printStackTrace(); } }
+            
+        }
+        
+        return JSONValue.toJSONString(json);
+    }
 }
