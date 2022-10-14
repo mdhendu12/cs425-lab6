@@ -101,7 +101,7 @@ public class TrainingSessionServlet extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Short description";
+        return "Training Session Servlet";
     }// </editor-fold>
 
 }

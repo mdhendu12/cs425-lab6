@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.HashMap;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
@@ -112,17 +111,13 @@ public class AttendeeDAO {
                 
                 if (upSuccess) {
             
-                    rs = ps.getResultSet();
+                    json.put("success", upSuccess);
 
-                    //if (rs.next()) {
-                        json.put("success", upSuccess);
+                    json.put("attendeeid", hm.get("attendeeid"));
+                    json.put("firstname", hm.get("firstname"));
+                    json.put("lastname", hm.get("lastname"));
+                    json.put("displayname", hm.get("displayname"));
                         
-                        json.put("attendeeid", hm.get("attendeeid"));
-                        json.put("firstname", hm.get("firstname"));
-                        json.put("lastname", hm.get("lastname"));
-                        json.put("displayname", hm.get("displayname"));
-                        
-                    //}
 
                 }
             }

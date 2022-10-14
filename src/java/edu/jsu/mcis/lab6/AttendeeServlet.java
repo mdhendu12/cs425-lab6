@@ -184,7 +184,7 @@ public class AttendeeServlet extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Short description";
+        return "Attendee Servlet";
     }// </editor-fold>
 
 }
