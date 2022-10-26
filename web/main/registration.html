@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
+-->
+<html>
+    <head>
+        <title>Registration</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script type="text/javascript" src="script.js"></script>
+        <script type="text/javascript" src="jquery-3.6.1.min.js"></script>
+    </head>
+    <body>
+        <p>
+            <a href="index.jsp">Main Menu</a>
+        </p>
+        <form name="regform" id="regform">
+        <fieldset>
+            <legend>Registrations</legend>
+            <p>Please enter your name:</p>
+
+            <label for="firstname">First Name:</label>
+            <input type="text" name="firstname" id="firstname">
+
+            <label for="lastname">Last Name:</label>
+            <input type="text" name="lastname" id="lastname">
+
+            <label for="displayname">Display Name:</label>
+            <input type="text" name="displayname" id="displayname">
+
+            <p>Choose a session: 
+                <span id="sessionmenu">
+                </span></p>
+            
+            <input type="submit" value="Submit" onclick="return Lab6.onClickRegPost();">
+        </fieldset>
+        </form>
+        
+    <script type="text/javascript">
+        Lab6.regInit();
+    </script>
+
+    </body>
+</html>

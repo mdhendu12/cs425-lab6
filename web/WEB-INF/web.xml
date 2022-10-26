@@ -13,20 +13,46 @@
         <servlet-class>edu.jsu.mcis.lab6.TrainingSessionServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>RegistrationServlet</servlet-name>
-        <url-pattern>/registrations</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>AttendeeServlet</servlet-name>
-        <url-pattern>/attendee</url-pattern>
+        <url-pattern>/main/attendee</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>TrainingSessionServlet</servlet-name>
-        <url-pattern>/trainingsessions</url-pattern>
+        <url-pattern>/main/trainingsessions</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RegistrationServlet</servlet-name>
+        <url-pattern>/main/registrations</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
+    <welcome-file-list>
+        <welcome-file>main/index.jsp</welcome-file>
+    </welcome-file-list>
+    <security-constraint>
+        <display-name>Main</display-name>
+        <web-resource-collection>
+            <web-resource-name>Main</web-resource-name>
+            <description/>
+            <url-pattern>/main/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>user</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <login-config>
+        <auth-method>FORM</auth-method>
+        <form-login-config>
+            <form-login-page>/login.jsp</form-login-page>
+            <form-error-page>/login.jsp?result=false</form-error-page>
+        </form-login-config>
+    </login-config>
+    <security-role>
+        <description/>
+        <role-name>user</role-name>
+    </security-role>
 </web-app>

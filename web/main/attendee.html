@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
+-->
+<html>
+    <head>
+        <title>Attendees</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script type="text/javascript" src="script.js"></script>
+        <script type="text/javascript" src="jquery-3.6.1.min.js"></script>
+    </head>
+    <body>
+        <p><a href="index.jsp">Main Menu</a></p>
+        <form name="attform" id="attform">
+            <fieldset>
+                <legend>Attendees</legend>
+    
+                <p>Choose an attendee: 
+                    <span id="attendeemenu">
+                    </span></p>
+                <input type="submit" value="Submit" onclick="return Lab6.onClickAttPost();">
+            </fieldset>
+            </form>
+        <div id="output">
+            
+        </div>
+        <script type="text/javascript">
+            Lab6.attInit();
+        </script>
+    </body>
+</html>

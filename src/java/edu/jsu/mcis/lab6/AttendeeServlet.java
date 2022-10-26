@@ -6,8 +6,12 @@ package edu.jsu.mcis.lab6;
 
 import edu.jsu.mcis.lab6.dao.AttendeeDAO;
 import edu.jsu.mcis.lab6.dao.DAOFactory;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.URLDecoder;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -77,11 +81,17 @@ public class AttendeeServlet extends HttpServlet {
         
         try ( PrintWriter out = response.getWriter()) {
             
-            int attendeeid = Integer.parseInt(request.getParameter("attendeeid"));
             
             AttendeeDAO dao = daoFactory.getAttendeeDAO();
-            
-            out.println(dao.list(attendeeid));
+                        
+            String p_id = request.getParameter("attendeeid");            
+            if (p_id == null || "".equals(p_id)) { 
+                out.println(dao.list());
+            }
+            else {
+                int attendeeid = Integer.parseInt(request.getParameter("attendeeid"));
+                out.println(dao.list(attendeeid));
+            }
             
             
         }
@@ -122,7 +132,6 @@ public class AttendeeServlet extends HttpServlet {
                       
             HashMap<String, String> hm = new HashMap<>();
             
-            hm.put("attendeeid", request.getParameter("attendeeid"));
             hm.put("displayname", request.getParameter("displayname"));
             hm.put("firstname", request.getParameter("firstname"));
             hm.put("lastname", request.getParameter("lastname"));
@@ -142,7 +151,7 @@ public class AttendeeServlet extends HttpServlet {
     protected void doPut(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DAOFactory daoFactory = null;
-
+        BufferedReader br = null;
         ServletContext context = request.getServletContext();
 
         if (context.getAttribute("daoFactory") == null) {
@@ -158,14 +167,26 @@ public class AttendeeServlet extends HttpServlet {
         
         
         try ( PrintWriter out = response.getWriter()) {
-                      
+            
+            br = new BufferedReader(new InputStreamReader(request.getInputStream()));
+            String p = URLDecoder.decode(br.readLine().trim(), Charset.defaultCharset());
+            
             HashMap<String, String> hm = new HashMap<>();
             
-            hm.put("attendeeid", request.getParameter("attendeeid"));
-            hm.put("displayname", request.getParameter("displayname"));
-            hm.put("firstname", request.getParameter("firstname"));
-            hm.put("lastname", request.getParameter("lastname"));
+            String[] pairs = p.trim().split("&");
             
+            for (int i = 0; i < pairs.length; ++i) {
+                String[] pair = pairs[i].split("=");
+                hm.put(pair[0], pair[1]);
+            }
+                                 
+//            HashMap<String, String> hm = new HashMap<>();
+            
+//            hm.put("attendeeid", request.getParameter("attendeeid"));
+//            hm.put("displayname", request.getParameter("displayname"));
+//            hm.put("firstname", request.getParameter("firstname"));
+//            hm.put("lastname", request.getParameter("lastname"));
+                      
             AttendeeDAO dao = daoFactory.getAttendeeDAO();
             
             out.println(dao.update(hm));
